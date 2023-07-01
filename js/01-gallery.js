@@ -2,9 +2,7 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 const galleryEl = document.querySelector('.gallery');
 
-
 galleryEl.addEventListener('click', onClickElementGallery);
-// galleryEl.addEventListener('click', )
 
 function createdElementGallery(galleryItems) {
   return galleryItems.map(itm => {
@@ -15,7 +13,7 @@ function createdElementGallery(galleryItems) {
        class='gallery__image'
        src='${itm.preview}'
        data-source='${itm.original}'
-       alt='Image description'
+       alt='${itm.description}'
      />
    </a>
  </li>
@@ -29,33 +27,34 @@ galleryEl.insertAdjacentHTML('beforeend', element);
 
 function onClickElementGallery(event) {
   event.preventDefault();
-  if(!event.target.classList.contains('gallery__image')) {
-    return
+  if (!event.target.classList.contains('gallery__image')) {
+    return;
   }
-
-  openOriginalSize(event, galleryItems)
+  openOriginalSize(event);
   // console.dir(event);
 }
-let instance = null
 
-function  openOriginalSize(event) {
+let instance = null;
+
+function openOriginalSize(event) {
   console.dir(event.target.dataset.source);
-    instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-`,{
-    onShow: () => {document.addEventListener('keydown', keyboardEsc)},
-      onClose: () => { document.removeEventListener('keydown', keyboardEsc) },
-
-    })
-    instance.show()
+  instance = basicLightbox.create(`
+    <img src='${event.target.dataset.source}' width='800' height='600'>
+`, {
+    onShow: () => {
+      document.addEventListener('keydown', keyboardEsc);
+    },
+    onClose: () => {
+      document.removeEventListener('keydown', keyboardEsc);
+    },
+  });
+  instance.show();
 }
 
 function keyboardEsc(event) {
-  if(event.key !== 'Escape') {
-    return
+  if (event.key !== 'Escape') {
+    return;
   }
-instance.close()
-
+  instance.close();
   console.log(event.key);
-
 }
